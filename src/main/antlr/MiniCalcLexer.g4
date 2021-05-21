@@ -3,7 +3,7 @@ lexer grammar MiniCalcLexer;
 channels { WHITESPACE }
 
 NEWLINE : '\r\n' | '\r' | '\n' ;
-WS : [\t]+ -> channel(WHITESPACE);
+WS : [\t ]+ -> channel(WHITESPACE);
 
 INPUT : 'input' ;
 VAR : 'var' ;

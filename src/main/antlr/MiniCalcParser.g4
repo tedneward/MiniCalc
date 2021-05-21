@@ -6,32 +6,32 @@ miniCalcFile : lines = line+;
 
 line : statement (NEWLINE | EOF);
 
-statement : inputDecl
-            | varDecl
-            | assignment
-            | print ;
+statement : inputDecl # inputDeclarationStatement
+            | varDecl # varDeclarationStatement
+            | assignment # assignmentStatement
+            | print # printStatement ;
 
 print : PRINT LPAREN expr RPAREN ;
 
-inputDecl : INPUT type name=ID ;
+inputDecl : INPUT type name=ID # inputDeclaration;
 
 varDecl : VAR assignment ;
 
 assignment : ID ASSIGN expr ;
 
-expr : left=expr operator=(DIVISION|ASTERISK) right=expr
-        | left=expr operator=(PLUS|MINUS) right=expr
-        | left=expr AS targetType=type
-        | LPAREN expr RPAREN
-        | ID
-        | MINUS expr
-        | STRING_OPEN (parts += stringLiteralContent)* STRING_CLOSE
-        | INTLIT
-        | DECLIT ;
+expr : left=expr operator=(DIVISION|ASTERISK) right=expr # binaryOperaton
+        | left=expr operator=(PLUS|MINUS) right=expr # binaryOperation
+        | left=expr AS targetType=type # typeConversion
+        | LPAREN expr RPAREN # parenExpression
+        | ID # varReference
+        | MINUS expr # unaryMinusExpression
+        | STRING_OPEN (parts += stringLiteralContent)* STRING_CLOSE # stringLiteral
+        | INTLIT # intLiteral
+        | DECLIT # decimalLiteral ;
 
-stringLiteralContent : STRING_CONTENT
-        | INTERPOLATION_OPEN expr INTERPOLATION_CLOSE ;
+stringLiteralContent : STRING_CONTENT # constantString
+        | INTERPOLATION_OPEN expr INTERPOLATION_CLOSE # interopolatedValue ;
 
-type : INT
-        | DECIMAL
-        | STRING ;
+type : INT # integer
+        | DECIMAL # decimal
+        | STRING # string ;
