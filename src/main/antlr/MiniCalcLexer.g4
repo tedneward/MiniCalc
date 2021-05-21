@@ -10,9 +10,11 @@ VAR : 'var' ;
 PRINT : 'print' ;
 AS : 'as' ;
 INT : 'Int' ;
+DECIMAL : 'Decimal' ;
 STRING : 'String' ;
 
-INTLIT : '0'|[1-9][0-9]* ;
+INTLIT : ('0'|[1-9][0-9]*) ;
+DECLIT : ('0'|[1-9][0-9]*) '.' [0-9]+ ;
 
 PLUS : '+';
 MINUS : '-';
@@ -26,7 +28,7 @@ ID : [_]*[a-z][A-Za-z0-9_]* ;
 
 STRING_OPEN : '"' -> pushMode(MODE_IN_STRING);
 
-UNAMTCHED : . ;
+UNMATCHED : . ;
 
 mode MODE_IN_STRING;
 
@@ -38,6 +40,8 @@ STRING_CLOSE : '"' -> popMode ;
 INTERPOLATION_OPEN : '#{' -> pushMode(MODE_IN_INTERPOLATION);
 STRING_CONTENT : ~["\n\r\t\\#]+ ;
 
+STR_UNMATCHED : . -> type(UNMATCHED);
+
 mode MODE_IN_INTERPOLATION;
 
 INTERPOLATION_CLOSE : '}' -> popMode;
@@ -46,9 +50,11 @@ INTERP_WS : [\t ]+ -> skip;
 
 INTERP_AS : 'as' -> type(AS);
 INTERP_INT : 'Int' -> type(INT);
+INTERP_DECIMAL : 'Decimal' -> type(DECIMAL);
 INTERP_STRING : 'String' -> type(STRING);
 
 INTERP_INTLIT : ('0'|[1-9][0-9]*) -> type(INTLIT);
+INTERP_DECLIT : ('0'|[1-9][0-9]*) '.' [0-9]+ -> type(DECLIT);
 
 INTERP_PLUS : '+' -> type(PLUS);
 INTERP_MINUS : '-' -> type(MINUS);
@@ -61,3 +67,4 @@ INTERP_RPAREN : ')' -> type(RPAREN);
 INTERP_ID : [_]*[a-z][A-Za-z0-9_]* -> type(ID);
 
 INTERP_STRING_OPEN : '"' -> type(STRING_OPEN), pushMode(MODE_IN_STRING);
+INTERP_UNMATCHED : . -> type(UNMATCHED);
