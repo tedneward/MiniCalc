@@ -6,7 +6,6 @@ package com.tedneward.minicalc
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 import kotlin.test.assertEquals
-import org.antlr.v4.runtime.ANTLRInputStream
 import org.antlr.v4.runtime.Token
 import java.io.FileInputStream
 import java.io.StringReader
@@ -27,10 +26,6 @@ fun tokensMapContent(lexer: MiniCalcLexer) = tokensMap(lexer, { _ -> lexer.text 
 fun tokensMapNames(lexer: MiniCalcLexer) = tokensMap(lexer, { t -> lexer.vocabulary.getSymbolicName(t.type) })
 
 class MiniCalcLexerTests {
-    @Test fun testMath() {
-        assertEquals(2, 1+1)
-    }
-
     val tests = mapOf(
         "var a = 1" to listOf("VAR", "ID", "ASSIGN", "INTLIT", "EOF"),
         "var a = 1.23" to listOf("VAR", "ID", "ASSIGN", "DECLIT", "EOF"),

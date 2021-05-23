@@ -4,68 +4,13 @@
 package com.tedneward.minicalc
 
 import com.tedneward.minicalc.MiniCalcLexer
-import org.antlr.v4.runtime.ANTLRInputStream
-import org.antlr.v4.runtime.Token
-import org.antlr.v4.runtime.CommonTokenStream
-import org.antlr.v4.runtime.ParserRuleContext
-import org.antlr.v4.runtime.Vocabulary
-import org.antlr.v4.runtime.tree.TerminalNode
 import java.io.FileInputStream
-import java.io.StringReader
-import java.util.LinkedList
-import kotlin.reflect.typeOf
-
-fun lexerForCode(code: String) = MiniCalcLexer(ANTLRInputStream(StringReader(code)))
-
-fun parseCode(code: String) : MiniCalcParser.MiniCalcFileContext = MiniCalcParser(CommonTokenStream(lexerForCode(code))).miniCalcFile()
-
-fun readExampleCode() = FileInputStream("examples/rectangle.mc").bufferedReader().use { it.readText() }
-
-class App {
-    val greeting: String
-        get() {
-            return "Welcome to MiniCalc."
-        }
-}
-
-abstract class ParseTreeElement {
-    abstract fun multiLineString(indentation : String = "") : String
-}
-
-class ParseTreeLeaf(val type: String, val text: String) : ParseTreeElement() {
-    override fun toString(): String = "T:$type[$text]"
-    override fun multiLineString(indentation: String) : String = "${indentation}T: $type[$text]\n"
-}
-
-class ParseTreeNode(val name: String) : ParseTreeElement() {
-    val children = LinkedList<ParseTreeElement>()
-    fun child(c : ParseTreeElement) : ParseTreeNode {
-        children.add(c)
-        return this
-    }
-    override fun toString(): String {
-        return "Node($name) $children"
-    }
-    override fun multiLineString(indentation: String) : String {
-        val sb = StringBuilder()
-        sb.append("${indentation}$name\n")
-        children.forEach { c -> sb.append(c.multiLineString(indentation + " ")) }
-        return sb.toString()
-    }
-}
-
-fun toParseTree(node: ParserRuleContext, vocabulary : Vocabulary) : ParseTreeNode {
-    val res = ParseTreeNode(node.javaClass.simpleName.removeSuffix("Context"))
-    node.children.forEach { c ->
-        when (c) {
-            is ParserRuleContext -> res.child(toParseTree(c, vocabulary))
-            is TerminalNode -> res.child(ParseTreeLeaf(vocabulary.getSymbolicName(c.symbol.type), c.text))
-        }
-    }
-    return res
-}
 
 fun main(args: Array<String>) {
-    println(App().greeting)
-    println(toParseTree(parseCode(readExampleCode()), MiniCalcParser.VOCABULARY).multiLineString())
+    println(
+        toParseTree(
+            parseCode(FileInputStream("examples/rectangle.mc").bufferedReader().use { it.readText() }), 
+            MiniCalcParser.VOCABULARY
+        ).multiLineString()
+    )
 }

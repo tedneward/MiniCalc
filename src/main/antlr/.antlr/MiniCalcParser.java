@@ -22,13 +22,12 @@ public class MiniCalcParser extends Parser {
 		ESCAPE_SLASH=23, ESCAPE_NEWLINE=24, ESCAPE_SHARP=25, STRING_CLOSE=26, 
 		INTERPOLATION_OPEN=27, STRING_CONTENT=28, INTERPOLATION_CLOSE=29, INTERP_WS=30;
 	public static final int
-		RULE_miniCalcFile = 0, RULE_line = 1, RULE_statement = 2, RULE_print = 3, 
-		RULE_inputDecl = 4, RULE_varDecl = 5, RULE_assignment = 6, RULE_expr = 7, 
-		RULE_stringLiteralContent = 8, RULE_type = 9;
+		RULE_miniCalcFile = 0, RULE_line = 1, RULE_statement = 2, RULE_assignment = 3, 
+		RULE_expr = 4, RULE_stringLiteralContent = 5, RULE_type = 6;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"miniCalcFile", "line", "statement", "print", "inputDecl", "varDecl", 
-			"assignment", "expr", "stringLiteralContent", "type"
+			"miniCalcFile", "line", "statement", "assignment", "expr", "stringLiteralContent", 
+			"type"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -122,17 +121,17 @@ public class MiniCalcParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(21); 
+			setState(15); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(20);
+				setState(14);
 				((MiniCalcFileContext)_localctx).lines = line();
 				}
 				}
-				setState(23); 
+				setState(17); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INPUT) | (1L << VAR) | (1L << PRINT) | (1L << ID))) != 0) );
@@ -168,9 +167,9 @@ public class MiniCalcParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(25);
+			setState(19);
 			statement();
-			setState(26);
+			setState(20);
 			_la = _input.LA(1);
 			if ( !(_la==EOF || _la==NEWLINE) ) {
 			_errHandler.recoverInline(this);
@@ -204,193 +203,91 @@ public class MiniCalcParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
-	public static class PrintStatementContext extends StatementContext {
-		public PrintContext print() {
-			return getRuleContext(PrintContext.class,0);
-		}
-		public PrintStatementContext(StatementContext ctx) { copyFrom(ctx); }
-	}
-	public static class AssignmentStatementContext extends StatementContext {
-		public AssignmentContext assignment() {
-			return getRuleContext(AssignmentContext.class,0);
-		}
-		public AssignmentStatementContext(StatementContext ctx) { copyFrom(ctx); }
-	}
-	public static class InputDeclarationStatementContext extends StatementContext {
-		public InputDeclContext inputDecl() {
-			return getRuleContext(InputDeclContext.class,0);
-		}
-		public InputDeclarationStatementContext(StatementContext ctx) { copyFrom(ctx); }
-	}
-	public static class VarDeclarationStatementContext extends StatementContext {
-		public VarDeclContext varDecl() {
-			return getRuleContext(VarDeclContext.class,0);
-		}
-		public VarDeclarationStatementContext(StatementContext ctx) { copyFrom(ctx); }
-	}
-
-	public final StatementContext statement() throws RecognitionException {
-		StatementContext _localctx = new StatementContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_statement);
-		try {
-			setState(32);
-			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case INPUT:
-				_localctx = new InputDeclarationStatementContext(_localctx);
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(28);
-				inputDecl();
-				}
-				break;
-			case VAR:
-				_localctx = new VarDeclarationStatementContext(_localctx);
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(29);
-				varDecl();
-				}
-				break;
-			case ID:
-				_localctx = new AssignmentStatementContext(_localctx);
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(30);
-				assignment();
-				}
-				break;
-			case PRINT:
-				_localctx = new PrintStatementContext(_localctx);
-				enterOuterAlt(_localctx, 4);
-				{
-				setState(31);
-				print();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class PrintContext extends ParserRuleContext {
+	public static class PrintStmtContext extends StatementContext {
 		public TerminalNode PRINT() { return getToken(MiniCalcParser.PRINT, 0); }
 		public TerminalNode LPAREN() { return getToken(MiniCalcParser.LPAREN, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public TerminalNode RPAREN() { return getToken(MiniCalcParser.RPAREN, 0); }
-		public PrintContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_print; }
+		public PrintStmtContext(StatementContext ctx) { copyFrom(ctx); }
 	}
-
-	public final PrintContext print() throws RecognitionException {
-		PrintContext _localctx = new PrintContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_print);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(34);
-			match(PRINT);
-			setState(35);
-			match(LPAREN);
-			setState(36);
-			expr(0);
-			setState(37);
-			match(RPAREN);
-			}
+	public static class AssignStmtContext extends StatementContext {
+		public AssignmentContext assignment() {
+			return getRuleContext(AssignmentContext.class,0);
 		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
+		public AssignStmtContext(StatementContext ctx) { copyFrom(ctx); }
 	}
-
-	public static class InputDeclContext extends ParserRuleContext {
-		public InputDeclContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
+	public static class VarStmtContext extends StatementContext {
+		public TerminalNode VAR() { return getToken(MiniCalcParser.VAR, 0); }
+		public AssignmentContext assignment() {
+			return getRuleContext(AssignmentContext.class,0);
 		}
-		@Override public int getRuleIndex() { return RULE_inputDecl; }
-	 
-		public InputDeclContext() { }
-		public void copyFrom(InputDeclContext ctx) {
-			super.copyFrom(ctx);
-		}
+		public VarStmtContext(StatementContext ctx) { copyFrom(ctx); }
 	}
-	public static class InputDeclarationContext extends InputDeclContext {
+	public static class InputStmtContext extends StatementContext {
 		public Token name;
 		public TerminalNode INPUT() { return getToken(MiniCalcParser.INPUT, 0); }
 		public TypeContext type() {
 			return getRuleContext(TypeContext.class,0);
 		}
 		public TerminalNode ID() { return getToken(MiniCalcParser.ID, 0); }
-		public InputDeclarationContext(InputDeclContext ctx) { copyFrom(ctx); }
+		public InputStmtContext(StatementContext ctx) { copyFrom(ctx); }
 	}
 
-	public final InputDeclContext inputDecl() throws RecognitionException {
-		InputDeclContext _localctx = new InputDeclContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_inputDecl);
+	public final StatementContext statement() throws RecognitionException {
+		StatementContext _localctx = new StatementContext(_ctx, getState());
+		enterRule(_localctx, 4, RULE_statement);
 		try {
-			_localctx = new InputDeclarationContext(_localctx);
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(39);
-			match(INPUT);
-			setState(40);
-			type();
-			setState(41);
-			((InputDeclarationContext)_localctx).name = match(ID);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class VarDeclContext extends ParserRuleContext {
-		public TerminalNode VAR() { return getToken(MiniCalcParser.VAR, 0); }
-		public AssignmentContext assignment() {
-			return getRuleContext(AssignmentContext.class,0);
-		}
-		public VarDeclContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_varDecl; }
-	}
-
-	public final VarDeclContext varDecl() throws RecognitionException {
-		VarDeclContext _localctx = new VarDeclContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_varDecl);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(43);
-			match(VAR);
-			setState(44);
-			assignment();
+			setState(34);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case INPUT:
+				_localctx = new InputStmtContext(_localctx);
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(22);
+				match(INPUT);
+				setState(23);
+				type();
+				setState(24);
+				((InputStmtContext)_localctx).name = match(ID);
+				}
+				break;
+			case VAR:
+				_localctx = new VarStmtContext(_localctx);
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(26);
+				match(VAR);
+				setState(27);
+				assignment();
+				}
+				break;
+			case ID:
+				_localctx = new AssignStmtContext(_localctx);
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(28);
+				assignment();
+				}
+				break;
+			case PRINT:
+				_localctx = new PrintStmtContext(_localctx);
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(29);
+				match(PRINT);
+				setState(30);
+				match(LPAREN);
+				setState(31);
+				expr(0);
+				setState(32);
+				match(RPAREN);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -418,15 +315,15 @@ public class MiniCalcParser extends Parser {
 
 	public final AssignmentContext assignment() throws RecognitionException {
 		AssignmentContext _localctx = new AssignmentContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_assignment);
+		enterRule(_localctx, 6, RULE_assignment);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(46);
+			setState(36);
 			match(ID);
-			setState(47);
+			setState(37);
 			match(ASSIGN);
-			setState(48);
+			setState(38);
 			expr(0);
 			}
 		}
@@ -542,14 +439,14 @@ public class MiniCalcParser extends Parser {
 		int _parentState = getState();
 		ExprContext _localctx = new ExprContext(_ctx, _parentState);
 		ExprContext _prevctx = _localctx;
-		int _startState = 14;
-		enterRecursionRule(_localctx, 14, RULE_expr, _p);
+		int _startState = 8;
+		enterRecursionRule(_localctx, 8, RULE_expr, _p);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(68);
+			setState(58);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case LPAREN:
@@ -558,11 +455,11 @@ public class MiniCalcParser extends Parser {
 				_ctx = _localctx;
 				_prevctx = _localctx;
 
-				setState(51);
+				setState(41);
 				match(LPAREN);
-				setState(52);
+				setState(42);
 				expr(0);
-				setState(53);
+				setState(43);
 				match(RPAREN);
 				}
 				break;
@@ -571,7 +468,7 @@ public class MiniCalcParser extends Parser {
 				_localctx = new VarReferenceContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(55);
+				setState(45);
 				match(ID);
 				}
 				break;
@@ -580,9 +477,9 @@ public class MiniCalcParser extends Parser {
 				_localctx = new UnaryMinusExpressionContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(56);
+				setState(46);
 				match(MINUS);
-				setState(57);
+				setState(47);
 				expr(4);
 				}
 				break;
@@ -591,24 +488,24 @@ public class MiniCalcParser extends Parser {
 				_localctx = new StringLiteralContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(58);
+				setState(48);
 				match(STRING_OPEN);
-				setState(62);
+				setState(52);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==INTERPOLATION_OPEN || _la==STRING_CONTENT) {
 					{
 					{
-					setState(59);
+					setState(49);
 					((StringLiteralContext)_localctx).stringLiteralContent = stringLiteralContent();
 					((StringLiteralContext)_localctx).parts.add(((StringLiteralContext)_localctx).stringLiteralContent);
 					}
 					}
-					setState(64);
+					setState(54);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(65);
+				setState(55);
 				match(STRING_CLOSE);
 				}
 				break;
@@ -617,7 +514,7 @@ public class MiniCalcParser extends Parser {
 				_localctx = new IntLiteralContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(66);
+				setState(56);
 				match(INTLIT);
 				}
 				break;
@@ -626,7 +523,7 @@ public class MiniCalcParser extends Parser {
 				_localctx = new DecimalLiteralContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(67);
+				setState(57);
 				match(DECLIT);
 				}
 				break;
@@ -634,7 +531,7 @@ public class MiniCalcParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(81);
+			setState(71);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -642,7 +539,7 @@ public class MiniCalcParser extends Parser {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(79);
+					setState(69);
 					_errHandler.sync(this);
 					switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 					case 1:
@@ -650,9 +547,9 @@ public class MiniCalcParser extends Parser {
 						_localctx = new BinaryOperatonContext(new ExprContext(_parentctx, _parentState));
 						((BinaryOperatonContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(70);
+						setState(60);
 						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
-						setState(71);
+						setState(61);
 						((BinaryOperatonContext)_localctx).operator = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==ASTERISK || _la==DIVISION) ) {
@@ -663,7 +560,7 @@ public class MiniCalcParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(72);
+						setState(62);
 						((BinaryOperatonContext)_localctx).right = expr(10);
 						}
 						break;
@@ -672,9 +569,9 @@ public class MiniCalcParser extends Parser {
 						_localctx = new BinaryOperationContext(new ExprContext(_parentctx, _parentState));
 						((BinaryOperationContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(73);
+						setState(63);
 						if (!(precpred(_ctx, 8))) throw new FailedPredicateException(this, "precpred(_ctx, 8)");
-						setState(74);
+						setState(64);
 						((BinaryOperationContext)_localctx).operator = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==PLUS || _la==MINUS) ) {
@@ -685,7 +582,7 @@ public class MiniCalcParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(75);
+						setState(65);
 						((BinaryOperationContext)_localctx).right = expr(9);
 						}
 						break;
@@ -694,18 +591,18 @@ public class MiniCalcParser extends Parser {
 						_localctx = new TypeConversionContext(new ExprContext(_parentctx, _parentState));
 						((TypeConversionContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(76);
+						setState(66);
 						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
-						setState(77);
+						setState(67);
 						match(AS);
-						setState(78);
+						setState(68);
 						((TypeConversionContext)_localctx).targetType = type();
 						}
 						break;
 					}
 					} 
 				}
-				setState(83);
+				setState(73);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			}
@@ -748,16 +645,16 @@ public class MiniCalcParser extends Parser {
 
 	public final StringLiteralContentContext stringLiteralContent() throws RecognitionException {
 		StringLiteralContentContext _localctx = new StringLiteralContentContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_stringLiteralContent);
+		enterRule(_localctx, 10, RULE_stringLiteralContent);
 		try {
-			setState(89);
+			setState(79);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case STRING_CONTENT:
 				_localctx = new ConstantStringContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(84);
+				setState(74);
 				match(STRING_CONTENT);
 				}
 				break;
@@ -765,11 +662,11 @@ public class MiniCalcParser extends Parser {
 				_localctx = new InteropolatedValueContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(85);
+				setState(75);
 				match(INTERPOLATION_OPEN);
-				setState(86);
+				setState(76);
 				expr(0);
-				setState(87);
+				setState(77);
 				match(INTERPOLATION_CLOSE);
 				}
 				break;
@@ -814,16 +711,16 @@ public class MiniCalcParser extends Parser {
 
 	public final TypeContext type() throws RecognitionException {
 		TypeContext _localctx = new TypeContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_type);
+		enterRule(_localctx, 12, RULE_type);
 		try {
-			setState(94);
+			setState(84);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case INT:
 				_localctx = new IntegerContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(91);
+				setState(81);
 				match(INT);
 				}
 				break;
@@ -831,7 +728,7 @@ public class MiniCalcParser extends Parser {
 				_localctx = new DecimalContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(92);
+				setState(82);
 				match(DECIMAL);
 				}
 				break;
@@ -839,7 +736,7 @@ public class MiniCalcParser extends Parser {
 				_localctx = new StringContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(93);
+				setState(83);
 				match(STRING);
 				}
 				break;
@@ -860,7 +757,7 @@ public class MiniCalcParser extends Parser {
 
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 7:
+		case 4:
 			return expr_sempred((ExprContext)_localctx, predIndex);
 		}
 		return true;
@@ -878,31 +775,29 @@ public class MiniCalcParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3 c\4\2\t\2\4\3\t\3"+
-		"\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\3\2"+
-		"\6\2\30\n\2\r\2\16\2\31\3\3\3\3\3\3\3\4\3\4\3\4\3\4\5\4#\n\4\3\5\3\5\3"+
-		"\5\3\5\3\5\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\t\3\t\3\t\3\t"+
-		"\3\t\3\t\3\t\3\t\3\t\3\t\7\t?\n\t\f\t\16\tB\13\t\3\t\3\t\3\t\5\tG\n\t"+
-		"\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\7\tR\n\t\f\t\16\tU\13\t\3\n\3\n\3"+
-		"\n\3\n\3\n\5\n\\\n\n\3\13\3\13\3\13\5\13a\n\13\3\13\2\3\20\f\2\4\6\b\n"+
-		"\f\16\20\22\24\2\5\3\3\3\3\3\2\20\21\3\2\16\17\2h\2\27\3\2\2\2\4\33\3"+
-		"\2\2\2\6\"\3\2\2\2\b$\3\2\2\2\n)\3\2\2\2\f-\3\2\2\2\16\60\3\2\2\2\20F"+
-		"\3\2\2\2\22[\3\2\2\2\24`\3\2\2\2\26\30\5\4\3\2\27\26\3\2\2\2\30\31\3\2"+
-		"\2\2\31\27\3\2\2\2\31\32\3\2\2\2\32\3\3\2\2\2\33\34\5\6\4\2\34\35\t\2"+
-		"\2\2\35\5\3\2\2\2\36#\5\n\6\2\37#\5\f\7\2 #\5\16\b\2!#\5\b\5\2\"\36\3"+
-		"\2\2\2\"\37\3\2\2\2\" \3\2\2\2\"!\3\2\2\2#\7\3\2\2\2$%\7\7\2\2%&\7\23"+
-		"\2\2&\'\5\20\t\2\'(\7\24\2\2(\t\3\2\2\2)*\7\5\2\2*+\5\24\13\2+,\7\25\2"+
-		"\2,\13\3\2\2\2-.\7\6\2\2./\5\16\b\2/\r\3\2\2\2\60\61\7\25\2\2\61\62\7"+
-		"\22\2\2\62\63\5\20\t\2\63\17\3\2\2\2\64\65\b\t\1\2\65\66\7\23\2\2\66\67"+
-		"\5\20\t\2\678\7\24\2\28G\3\2\2\29G\7\25\2\2:;\7\17\2\2;G\5\20\t\6<@\7"+
-		"\26\2\2=?\5\22\n\2>=\3\2\2\2?B\3\2\2\2@>\3\2\2\2@A\3\2\2\2AC\3\2\2\2B"+
-		"@\3\2\2\2CG\7\34\2\2DG\7\f\2\2EG\7\r\2\2F\64\3\2\2\2F9\3\2\2\2F:\3\2\2"+
-		"\2F<\3\2\2\2FD\3\2\2\2FE\3\2\2\2GS\3\2\2\2HI\f\13\2\2IJ\t\3\2\2JR\5\20"+
-		"\t\fKL\f\n\2\2LM\t\4\2\2MR\5\20\t\13NO\f\t\2\2OP\7\b\2\2PR\5\24\13\2Q"+
-		"H\3\2\2\2QK\3\2\2\2QN\3\2\2\2RU\3\2\2\2SQ\3\2\2\2ST\3\2\2\2T\21\3\2\2"+
-		"\2US\3\2\2\2V\\\7\36\2\2WX\7\35\2\2XY\5\20\t\2YZ\7\37\2\2Z\\\3\2\2\2["+
-		"V\3\2\2\2[W\3\2\2\2\\\23\3\2\2\2]a\7\t\2\2^a\7\n\2\2_a\7\13\2\2`]\3\2"+
-		"\2\2`^\3\2\2\2`_\3\2\2\2a\25\3\2\2\2\n\31\"@FQS[`";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3 Y\4\2\t\2\4\3\t\3"+
+		"\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\3\2\6\2\22\n\2\r\2\16\2\23\3"+
+		"\3\3\3\3\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4%\n\4\3"+
+		"\5\3\5\3\5\3\5\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\7\6\65\n\6\f\6"+
+		"\16\68\13\6\3\6\3\6\3\6\5\6=\n\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\7"+
+		"\6H\n\6\f\6\16\6K\13\6\3\7\3\7\3\7\3\7\3\7\5\7R\n\7\3\b\3\b\3\b\5\bW\n"+
+		"\b\3\b\2\3\n\t\2\4\6\b\n\f\16\2\5\3\3\3\3\3\2\20\21\3\2\16\17\2a\2\21"+
+		"\3\2\2\2\4\25\3\2\2\2\6$\3\2\2\2\b&\3\2\2\2\n<\3\2\2\2\fQ\3\2\2\2\16V"+
+		"\3\2\2\2\20\22\5\4\3\2\21\20\3\2\2\2\22\23\3\2\2\2\23\21\3\2\2\2\23\24"+
+		"\3\2\2\2\24\3\3\2\2\2\25\26\5\6\4\2\26\27\t\2\2\2\27\5\3\2\2\2\30\31\7"+
+		"\5\2\2\31\32\5\16\b\2\32\33\7\25\2\2\33%\3\2\2\2\34\35\7\6\2\2\35%\5\b"+
+		"\5\2\36%\5\b\5\2\37 \7\7\2\2 !\7\23\2\2!\"\5\n\6\2\"#\7\24\2\2#%\3\2\2"+
+		"\2$\30\3\2\2\2$\34\3\2\2\2$\36\3\2\2\2$\37\3\2\2\2%\7\3\2\2\2&\'\7\25"+
+		"\2\2\'(\7\22\2\2()\5\n\6\2)\t\3\2\2\2*+\b\6\1\2+,\7\23\2\2,-\5\n\6\2-"+
+		".\7\24\2\2.=\3\2\2\2/=\7\25\2\2\60\61\7\17\2\2\61=\5\n\6\6\62\66\7\26"+
+		"\2\2\63\65\5\f\7\2\64\63\3\2\2\2\658\3\2\2\2\66\64\3\2\2\2\66\67\3\2\2"+
+		"\2\679\3\2\2\28\66\3\2\2\29=\7\34\2\2:=\7\f\2\2;=\7\r\2\2<*\3\2\2\2</"+
+		"\3\2\2\2<\60\3\2\2\2<\62\3\2\2\2<:\3\2\2\2<;\3\2\2\2=I\3\2\2\2>?\f\13"+
+		"\2\2?@\t\3\2\2@H\5\n\6\fAB\f\n\2\2BC\t\4\2\2CH\5\n\6\13DE\f\t\2\2EF\7"+
+		"\b\2\2FH\5\16\b\2G>\3\2\2\2GA\3\2\2\2GD\3\2\2\2HK\3\2\2\2IG\3\2\2\2IJ"+
+		"\3\2\2\2J\13\3\2\2\2KI\3\2\2\2LR\7\36\2\2MN\7\35\2\2NO\5\n\6\2OP\7\37"+
+		"\2\2PR\3\2\2\2QL\3\2\2\2QM\3\2\2\2R\r\3\2\2\2SW\7\t\2\2TW\7\n\2\2UW\7"+
+		"\13\2\2VS\3\2\2\2VT\3\2\2\2VU\3\2\2\2W\17\3\2\2\2\n\23$\66<GIQV";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

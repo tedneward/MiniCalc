@@ -6,12 +6,47 @@ package com.tedneward.minicalc
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 import kotlin.test.assertEquals
-import org.antlr.v4.runtime.ANTLRInputStream
+import org.antlr.v4.runtime.CharStreams
+import org.antlr.v4.runtime.CommonTokenStream
+import org.antlr.v4.runtime.ParserRuleContext
+import org.antlr.v4.runtime.tree.TerminalNode
 import org.antlr.v4.runtime.Token
+import org.antlr.v4.runtime.Vocabulary
 import java.io.FileInputStream
 import java.io.StringReader
 import java.util.LinkedList
 
+fun lexerForResource(resourceName: String, clazz: Class<Any>) = 
+    MiniCalcLexer(CharStreams.fromStream(clazz.getResourceAsStream("/${resourceName}.mc")))
+
+fun parseResource(resourceName: String, clazz: Class<Any>) : MiniCalcParser.MiniCalcFileContext = 
+    MiniCalcParser(CommonTokenStream(lexerForResource(resourceName, clazz))).miniCalcFile()
 
 class MiniCalcParserTests {
+    @Test fun mathWorks() {
+        assertEquals(2, 1+1)
+    }
+
+    @Test fun printTree() {
+        val tree = toParseTree(parseResource("vardecl", this.javaClass), MiniCalcParser.VOCABULARY)
+        print(tree.multiLineString(" "))
+
+        assertEquals("Node(MiniCalcFile)", tree.toString())
+
+        val line = tree.children.toTypedArray<ParseTreeElement>().get(0)
+        assertEquals("Node(Line)", line.toString())
+
+        val varStmt = (line as ParseTreeNode).children.toTypedArray<ParseTreeElement>().get(0)
+        assertEquals("Node(VarStmt)", varStmt.toString())
+
+        val varKeyword = (varStmt as ParseTreeNode).children.toTypedArray<ParseTreeElement>().get(0)
+        assertEquals("T: VAR[var]", varKeyword.toString())
+
+        val varAssign = varStmt.children.toTypedArray<ParseTreeElement>().get(1)
+        assertEquals("Node(Assignment)", varAssign.toString())
+        assertEquals("T: ID[x]", (varAssign as ParseTreeNode).children.toTypedArray<ParseTreeElement>().get(0).toString())
+        assertEquals("T: ASSIGN[=]", varAssign.children.toTypedArray<ParseTreeElement>().get(1).toString())
+
+        val varAssignInt = varAssign.children.toTypedArray<ParseTreeElement>().get(0)
+    }
 }
