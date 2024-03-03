@@ -3,6 +3,30 @@ package com.tedneward.minicalc
 import java.lang.reflect.ParameterizedType
 import kotlin.reflect.full.memberProperties
 
+// My AST (as opposed to Tomassi's AST)
+
+data class MiniCalcFileAST(val filename: String? = null): Node {
+    override fun toString(): String {
+        return "Source: ${filename}"
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 data class Point(val line: Int, val column: Int) {
     
     override fun toString() = "Line $line, Column $column"
@@ -44,26 +68,27 @@ fun pos(startLine:Int, startCol:Int, endLine:Int, endCol:Int) = Position(Point(s
  * Node and utility methods
  */
 interface Node {
-    val position: Position?
+//    val position: Position?
 }
 
-fun Node.process(operation: (Node) -> Unit) {
-    operation(this)
-    this.javaClass.kotlin.memberProperties.forEach { p ->
-        val v = p.get(this)
-        when (v) {
-            is Node -> v.process(operation)
-            is Collection<*> -> v.forEach { if (it is Node) it.process(operation) }
-        }
-    }
-}
+//fun Node.process(operation: (Node) -> Unit) {
+//    operation(this)
+//    this.javaClass.kotlin.memberProperties.forEach { p ->
+//        val v = p.get(this)
+//        when (v) {
+//            is Node -> v.process(operation)
+//            is Collection<*> -> v.forEach { if (it is Node) it.process(operation) }
+//        }
+//    }
+//}
 
 //fun <T: Node> Node.specificProcess(klass: Class<T>, operation: (T) -> Unit) {
 //    process { if (klass.isInstance(it) { operation(it as T) } ) }
 //}
 
-fun Node.isBefore(other: Node) : Boolean = position!!.start.isBefore(other.position!!.start)
+//fun Node.isBefore(other: Node) : Boolean = position!!.start.isBefore(other.position!!.start)
 
+/*
 fun Node.multilineString(indent: String = "") : String {
     val indentBlock = "  "
     
@@ -94,6 +119,7 @@ fun Node.multilineString(indent: String = "") : String {
     sb.append("$indent}\n")
     return sb.toString() 
 }
+*/
 
 interface Named {
     val name: String
@@ -113,7 +139,7 @@ fun <N> ReferenceByName<N>.tryToResolve(candidates: List<N>): Boolean where N : 
 
 ////////////////////
 // MiniCalc-specific
-
+/*
 data class MiniCalcFile(val statements: List<Statement>, override val position: Position? = null) : Node
 
 interface Type : Node
@@ -165,3 +191,5 @@ data class InputDeclaration(override val name: String, val type: Type, override 
 data class Assignment(val varDecl: ReferenceByName<VarDeclaration>, val value: Expression, override val position: Position? = null) : Statement
 
 data class Print(val value: Expression, override val position: Position? = null) : Statement
+
+*/

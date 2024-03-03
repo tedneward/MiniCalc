@@ -6,10 +6,16 @@ miniCalcFile : lines = line+;
 
 line : statement (NEWLINE | EOF);
 
-statement : INPUT type name=ID # inputStmt
-            | VAR assignment # varStmt
-            | assignment # assignStmt
-            | PRINT LPAREN expr RPAREN  # printStmt ;
+statement : inputDecl # inputDeclarationStatement
+            | varDecl # varDeclarationStatement
+            | assignment # assignmentStatement
+            | print # printStatement ;
+
+print : PRINT LPAREN expr RPAREN ;
+
+inputDecl : INPUT type name=ID # inputDeclaration;
+
+varDecl : VAR assignment # varDeclaration;
 
 assignment : ID ASSIGN expr ;
 

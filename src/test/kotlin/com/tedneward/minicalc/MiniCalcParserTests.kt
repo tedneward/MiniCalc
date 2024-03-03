@@ -37,12 +37,15 @@ class MiniCalcParserTests {
         assertEquals("Node(Line)", line.toString())
 
         val varStmt = (line as ParseTreeNode).children.toTypedArray<ParseTreeElement>().get(0)
-        assertEquals("Node(VarStmt)", varStmt.toString())
+        assertEquals("Node(VarDeclarationStatement)", varStmt.toString())
 
-        val varKeyword = (varStmt as ParseTreeNode).children.toTypedArray<ParseTreeElement>().get(0)
+        val varDecl = (line as ParseTreeNode).children.toTypedArray<ParseTreeElement>().get(0)
+        assertEquals("Node(VarDeclaration)", varDecl.toString())
+
+        val varKeyword = (varDecl as ParseTreeNode).children.toTypedArray<ParseTreeElement>().get(0)
         assertEquals("T: VAR[var]", varKeyword.toString())
 
-        val varAssign = varStmt.children.toTypedArray<ParseTreeElement>().get(1)
+        val varAssign = varDecl.children.toTypedArray<ParseTreeElement>().get(1)
         assertEquals("Node(Assignment)", varAssign.toString())
         assertEquals("T: ID[x]", (varAssign as ParseTreeNode).children.toTypedArray<ParseTreeElement>().get(0).toString())
         assertEquals("T: ASSIGN[=]", varAssign.children.toTypedArray<ParseTreeElement>().get(1).toString())
